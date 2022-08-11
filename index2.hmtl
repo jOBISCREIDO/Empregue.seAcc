@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empregue.se</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <form action="/pagina-processa-dados-do-form" method="post"> </form>
+
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyCzNwGGaxo0JbJpH7Ly_Jlh0pJOBa4X2WY",
+        authDomain: "empreguese-48f51.firebaseapp.com",
+        databaseURL: "https://empreguese-48f51-default-rtdb.firebaseio.com",
+        projectId: "empreguese-48f51",
+        storageBucket: "empreguese-48f51.appspot.com",
+        messagingSenderId: "995345543313",
+        appId: "1:995345543313:web:a2c6798dc899c167cd8f30"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script src="sketch.js"></script>
+    <script src="fire.js"></script>
+
+</head>
+<body>
+    <header>Empregue.se</header>
+    
+    <br><h2>Crie sua conta</h2>
+    <div class="person">
+    <img src="imagens/person.png">
+    </div>
+    
+    <form action="https://empreguese-48f51-default-rtdb.firebaseio.com" method="post">
+        
+        <br><br><div class="name">
+        
+        <input type="text" name="Username" placeholder="Nome" id="nome">
+        </div>
+
+        <br><div class="email">
+        
+        <input type="email" name="EmailAddress" placeholder="E-mail" id="email">
+        </div>
+
+        <br><div class="enviar">
+        <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <script>
+    
+    function submitForm(e) {
+            e.preventDefault();
+
+    var name = getInputVal('name');
+            var email = getInputVal('email');
+  
+            saveMessage(name, email);
+            document.getElementById('contactForm').reset();
+        }
+
+        function getInputVal(id) {
+            return document.getElementById(id).value;
+        }
+        function saveMessage(name, email) {
+            var newMessageRef = messagesRef.push();
+             newMessageRef.set({
+                name: name,
+                email: email,
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

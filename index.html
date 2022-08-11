@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empregue.se</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <form action="/pagina-processa-dados-do-form" method="post"> </form>
+</head>
+<body>
+
+    <header>Empregue.se</header>
+    
+    <br><h2>Crie sua conta</h2>
+    <div class="person">
+    <img src="imagens/person.png">
+    </div>
+    
+    <form>
+        
+        <br><br><div class="name">
+        <input id="userN" type="email" name="Username" minlength="5" placeholder="Nome"  >
+        </div>
+
+        <br><div class="email">
+        <input id="userE" type="text" name="EmailAddress" placeholder="E-mail" minlength="30">
+        </div>
+
+        <br><div class="passWord">
+            <input id="userP" type="text" name="pw" placeholder="senha">
+        </div>
+
+        <br><div class="enviar">
+            <button id="SubBtn" type="submit">Enviar</button>
+        </div>
+        <br><div class="enviar">
+            <button id="Sub2Btn" type="submit">Pronto!!!</button>
+        </div>
+    </form>
+
+    <script type="module">
+            
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        
+        const firebaseConfig = {
+        apiKey: "AIzaSyCzNwGGaxo0JbJpH7Ly_Jlh0pJOBa4X2WY",
+        authDomain: "empreguese-48f51.firebaseapp.com",
+        databaseURL: "https://empreguese-48f51-default-rtdb.firebaseio.com",
+        projectId: "empreguese-48f51",
+        storageBucket: "empreguese-48f51.appspot.com",
+        messagingSenderId: "995345543313",
+        appId: "1:995345543313:web:a2c6798dc899c167cd8f30",
+        measurementId: "G-RECNPRWGTW"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+         
+        import{
+            getFirestore, doc, getDoc, setDoc, collection, addDoc, updateDoc, deleteDoc, deleteField
+        }
+        from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+
+        const db = getFirestore(app);
+
+        let userN = document.getElementById("userN")
+        let userE = document.getElementById("userE")
+        let userP = document.getElementById("userP")
+
+        let SubBtn = document.getElementById("SubBtn")
+        let Sub2Btn = document.getElementById("Sub2Btn")
+
+
+        async function addDocument_AutoID() {
+
+            var ref = collection(db, "user")
+
+            const docRef = await addDoc(
+                ref, {
+                    Name: userN.value,
+                    Email: userE.value,
+                    Password: userP.value
+                }
+            )
+                .then(() =>{
+                   alert("data OK") 
+                })
+                .catch((error) =>{
+
+                    alert("deu não" + error)
+
+                })
+            
+        }
+
+        async function addDocument_CustomID() {
+
+            var ref = doc(db, "user", userP.value)
+
+                const docRef = await setDoc(
+                    ref, {
+                        Name: userN.value,
+                        Email: userE.value,
+                        Password: userP.value
+                    }
+                )
+                    .then(() =>{
+                    alert("data OK") 
+                    })
+                    .catch((error) =>{
+                    alert("deu não" + error)
+                    })
+
+        }
+
+        SubBtn.addEventListener("click", addDocument_CustomID);
+        Sub2Btn.addEventListener("click", function() {
+            setTimeout(function() {
+                window.location.replace("https://jobiscreido.github.io/Empregue.seMain/")
+            }, 5000)
+        })
+
+      </script>
+      
+</body>
+
+</html>
