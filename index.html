@@ -6,36 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empregue.se</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="styleshet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
     <form action="/pagina-processa-dados-do-form" method="post"> </form>
 </head>
 <body>
 
     <header>Empregue.se</header>
     
-    <br><h2>Crie sua conta</h2>
-    <div class="person">
-    <img src="imagens/person.png">
-    </div>
     
+    <br><h2>Crie sua conta</h2>
+    
+    <img id="myimg"> <br><br><br><br><br><br>
+    
+
     <form>
-        
+        <div class="customizeBtn">
+            <button id="addPic" type="button">add</button>
+        </div>
+        <div class="customizeBtn2">
+            <button type="button" id="SelePic">sel</button>
+        </div> 
+
         <br><br><div class="name">
-        <input id="userN" type="email" name="Username" minlength="5" placeholder="Nome"  >
+        <input id="userN" type="text" name="Username" minlength="5" placeholder="Nome"  >
         </div>
 
         <br><div class="email">
-        <input id="userE" type="text" name="EmailAddress" placeholder="E-mail" minlength="30">
+        <input id="userE" type="email" name="EmailAddress" placeholder="E-mail" minlength="30">
         </div>
 
         <br><div class="passWord">
-            <input id="userP" type="text" name="pw" placeholder="senha">
+            <input id="namebox" type="text" name="pw" placeholder="senha">
         </div>
 
         <br><div class="enviar">
-            <button id="SubBtn" type="submit">Enviar</button>
+            <button id="SubBtn" type="button">Enviar</button>
         </div>
         <br><div class="enviar">
-            <button id="Sub2Btn" type="submit">Pronto!!!</button>
+            <button id="Sub2Btn" type="button">Pronto!!!</button>
         </div>
     </form>
 
@@ -54,19 +62,24 @@
         measurementId: "G-RECNPRWGTW"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
          
+        //imports
         import{
             getFirestore, doc, getDoc, setDoc, collection, addDoc, updateDoc, deleteDoc, deleteField
         }
         from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+        import{
+            getStorage, ref as sRef, uploadBytesResumable, getDownloadURL
+        }
+            from"https://www.gstatic.com/firebasejs/9.1.0/firebase-storage.js";
 
         const db = getFirestore(app);
 
         let userN = document.getElementById("userN")
         let userE = document.getElementById("userE")
-        let userP = document.getElementById("userP")
+        let userP = document.getElementById("namebox")
+
 
         let SubBtn = document.getElementById("SubBtn")
         let Sub2Btn = document.getElementById("Sub2Btn")
@@ -114,12 +127,73 @@
 
         }
 
+        var files = []
+        var reader = new FileReader(); 
+
+        var person = document.getElementById('person')
+        var addPic = document.getElementById('addPic')
+        var SelePic = document.getElementById('SelePic')
+        var myimg = document.getElementById('myimg')
+        var namebox = document.getElementById('namebox')
+        var USerP = document.getElementById('userP')
+
+        var input = document.createElement('input')
+        input.type = 'file'
+
+        input.onchange = e =>{
+            files = e.target.files;
+
+            
+            
+            reader.readAsDataURL(files[0])
+        }
+        reader.onload = function(){
+
+            myimg.src = reader.result
+
+        }
+        SelePic.onclick = function(){
+            input.click()
+        }
+        function GetFileName(file) {
+            var temp = file.name.split('.')
+            var fname = temp.slice(0, -1).join('.')
+            return fname;
+        }
+
+        //upload
+
+        async function UploadProcess() {
+
+            var ImgToUpload = files[0]
+            var ImgName = namebox.value
+
+            const metaData = {
+                contentType:ImgToUpload.type
+            }
+
+            const storage = getStorage();
+
+            const storageRef = sRef(storage, "Images/"+ImgName)
+
+            const UploadTask = uploadBytesResumable(storageRef, ImgToUpload, metaData)
+
+            
+        }
+
+        function saveURLtoFIrestore(){
+            var name = namebox.value
+
+            var ref = doc(db)
+        }
+
         SubBtn.addEventListener("click", addDocument_CustomID);
         Sub2Btn.addEventListener("click", function() {
             setTimeout(function() {
                 window.location.replace("https://jobiscreido.github.io/Empregue.seMain/")
             }, 5000)
         })
+        addPic.onclick = UploadProcess;
 
       </script>
       
